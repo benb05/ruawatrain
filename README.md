@@ -2,7 +2,7 @@
 
 **Roster**: Benjamin Belotser, Josiah Moltz, David Deng
 
-This project is a recreation of the PacMan. If finished before deadline, we plan to add a gamemode `Hunted` where the player attempts to hunt the Pacman, which is an AI. 
+This project is a recreation of PacMan. If finished before deadline, we plan to add a gamemode `Hunted` where the player attempts to hunt the Pacman, which is an AI. 
 
 ### How to Run
 - Open Terminal
