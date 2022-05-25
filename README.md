@@ -12,6 +12,6 @@ This project is a recreation of PacMan. If finished before deadline, we plan to 
 git clone https://github.com/benb05/ruawatrain.git
 
 //Navigate to directory and compile and run `Woo.pde`
-cd ruawatrain
+cd ruawatrain/Woo
 processing Woo.pde
 ```
