@@ -49,9 +49,16 @@ DD :: Placed README in place
 JM :: Placed Devlog in place
 ==============================================================
 
-yyyy-mm-dd
+2022-05-26
 --------------------------------------------------------------
-<Member> :: <Thing member did.>
-<Member> :: <Thing member did.>
-<Member> :: <Thing member did.>
+BB :: Finish proposal
+DD :: Finish proposal
+JM :: Finish proposal
+==============================================================
+
+2022-mm-dd
+--------------------------------------------------------------
+BB :: <Thing member did.>
+DD :: <Thing member did.>
+JM :: <Thing member did.>
 ==============================================================
