@@ -70,6 +70,13 @@ DD :: BFS to optimize solving algo, Ghost/Pacman class
 JM :: Ghost/Pacman class
 ==============================================================
 
+2022-05-31
+--------------------------------------------------------------
+BB :: <Thing member did.>
+DD :: Worked on BFS
+JM :: Worked on DFS, finished (?) Ghost class
+==============================================================
+
 2022-mm-dd
 --------------------------------------------------------------
 BB :: <Thing member did.>
