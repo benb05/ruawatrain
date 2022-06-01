@@ -9,6 +9,8 @@ import java.util.*;
 public class Pacman {
   private char[][] _maze;
   int h,w;
+  int pX, pY;
+  int dX, dY; // change in pacman's motion (derivative teehee)
 
   // CONSTRUCTOR
   public Pacman( String inputFile )
@@ -55,12 +57,43 @@ public class Pacman {
   }//end constructor
 
   // ACCESSORS
+  public int getPX()
+  {
+    return pX;
+  }
+
+  public int getPY()
+  {
+    return pY;
+  }
 
   // MUTATORS
+  public int turn(String direction) {
+    if (direction.equals("W")) {
+      dX = 0;
+      dY = -1;
+    }
+    else if (direction.equals("A")) {
+      dX = -1;
+      dY = 0;
+    }
+    else if (direction.equals("S")) {
+      dX = 0;
+      dY = 1;
+    }
+    else if (direction.equals("D")) {
+      dX = 1;
+      dY = 0;
+    }
+  }
 
-  // SOLVER
-
-  // RESET
+  // MOVING
+  public void move() {
+    if (_maze[pX+dX][pY+xY] == '#') {
+      pX = pX+dX;
+      pY = pY+dY;
+    }
+  }
 
   // FOR TESTING
 
