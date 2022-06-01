@@ -125,7 +125,7 @@ public class Woo {
       delay(100);
       pacman.move();
       clyde.movePacman(pacman.getPX(),pacman.getPY());
-      //clyde.move();
+      clyde.move();
       inky.movePacman(pacman.getPX(),pacman.getPY());
       inky.move();
     }

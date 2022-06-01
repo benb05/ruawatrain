@@ -165,7 +165,7 @@ public class Ghost {
   }
 
   public void distOpt(int x, int y) {
-    if ( x>pX && y>pY) {
+    if ( x >= pX && y >= pY) {
       if (abs(x-pX) > abs(y-pY)) {
         solve(x-1,y);
         solve(x,y-1);
@@ -179,7 +179,7 @@ public class Ghost {
         solve(x,y+1);
       }
     }
-    else if ( x >= pX && y <= pY) {
+    else if ( x >= pX && y < pY) {
       if (abs(x-pX) > abs(y-pY)) {
         solve(x-1,y);
         solve(x,y+1);
@@ -193,7 +193,7 @@ public class Ghost {
         solve(x,y-1);
       }
     }
-    else if (x<pX && y > pY) {
+    else if (x < pX && y >= pY) {
       if (abs(x-pX) > abs(y-pY)) {
         solve(x+1,y);
         solve(x,y-1);
