@@ -16,7 +16,7 @@ public class Woo {
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
   public static final String WHITE = "\u001B[37m";
-  public static final String ORANGE = "\u001b[31;1m";
+  public static final String ORANGE = "\u001b[31m";
 
   public Woo( String inputFile )
   {
@@ -33,7 +33,7 @@ public class Woo {
     try {
       Scanner sc = new Scanner( new File(inputFile) );
 
-      System.out.println( "reading in file..." );
+      //System.out.println( "reading in file..." );
 
       int row = 0;
 
@@ -110,8 +110,8 @@ public class Woo {
     clyde.setGX(6);
     clyde.setGY(3);
 
-    inky.setGX(28);
-    inky.setGY(2);
+    inky.setGX(19);
+    inky.setGY(16);
 
     pacman.turn("D");
     clyde.addMove("D");

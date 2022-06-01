@@ -25,7 +25,7 @@ public class Pacman {
     try {
       Scanner sc = new Scanner( new File(inputFile) );
 
-      System.out.println( "reading in file..." );
+      //System.out.println( "reading in file..." );
 
       int row = 0;
 

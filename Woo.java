@@ -16,7 +16,7 @@ public class Woo {
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
   public static final String WHITE = "\u001B[37m";
-  public static final String ORANGE = "\u001b[31;1m";
+  public static final String ORANGE = "\u001b[31m";
 
   public Woo( String inputFile )
   {
