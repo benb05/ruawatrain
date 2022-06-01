@@ -12,6 +12,7 @@ public class Woo {
   char[][] _maze;
   int h,w;
 
+  public static final String CLEAR = "\033[H\033[2J[0;0H";
   // COLORS BC WHY NOT
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
@@ -20,6 +21,9 @@ public class Woo {
 
   public Woo( String inputFile )
   {
+    if (inputFile == null) {
+      System.exit(0);
+    }
     clyde = new Ghost(inputFile);
     inky = new Ghost(inputFile);
     pacman = new Pacman(inputFile);
@@ -32,8 +36,6 @@ public class Woo {
     //transcribe maze from file into memory
     try {
       Scanner sc = new Scanner( new File(inputFile) );
-
-      //System.out.println( "reading in file..." );
 
       int row = 0;
 
@@ -64,28 +66,24 @@ public class Woo {
 
   public String toString()
   {
-    //send ANSI code "ESC[0;0H" to place cursor in upper left
-    String retStr = "[0;0H";
-    //emacs shortcut: C-q, ESC
-    //emacs shortcut: M-x quoted-insert, ESC
-
+    String retStr = CLEAR;
     int i, j;
     for( i=0; i<h; i++ ) {
       for( j=0; j<w; j++ ) {
         if (j == clyde.getGX() && i == clyde.getGY()) {
-          retStr = retStr + ORANGE + "C" + WHITE;
+          retStr += ORANGE + "C" + WHITE;
         }
         else if (j == pacman.getPX() && i == pacman.getPY()) {
-          retStr = retStr + YELLOW + "P" + WHITE;
+          retStr += YELLOW + "P" + WHITE;
         }
         else if (j == inky.getGX() && i == inky.getGY()) {
-          retStr = retStr + CYAN + "I" + WHITE;
+          retStr += CYAN + "I" + WHITE;
         }
         else {
-          retStr = retStr + _maze[j][i];
+          retStr += _maze[j][i];
         }
       }
-      retStr = retStr + "\n";
+      retStr += "\n";
     }
     return retStr;
   }
@@ -120,6 +118,7 @@ public class Woo {
 
   public void play() // RUDIMENTARY turn
   {
+    setup();
     while (!clyde.hasWon() && !inky.hasWon()) {
       System.out.println(this);
       delay(100);
@@ -133,20 +132,15 @@ public class Woo {
 
   public static void main( String[] args )
   {
-    String mazeInputFile = null;
-
     try {
-      mazeInputFile = args[0];
-    } catch( Exception e ) {
+      String mazeInputFile = args[0
+      ];
+      Woo game = new Woo(mazeInputFile);
+      game.play();
+    }
+    catch( Exception e ) {
       System.out.println( "Error reading input file." );
       System.out.println( "USAGE:\n $ java Maze path/to/filename" );
     }
-
-    if (mazeInputFile==null) { System.exit(0); }
-
-    Woo game = new Woo(mazeInputFile);
-
-    game.setup();
-    game.play();
   }
 }
