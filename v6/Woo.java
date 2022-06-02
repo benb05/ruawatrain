@@ -32,52 +32,20 @@ public class Woo {
     pinky = new Ghost(inputFile);
     blinky = new Ghost(inputFile);
     pacman = new Pacman(inputFile);
+    _maze = pacman.getMap();
+    System.out.println("This is idk" + _maze[10][10]);
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
     System.out.println(CLEAR);
-    _maze = new char[80][41];
-    h = 0;
-    w = 0;
-
-    //transcribe maze from file into memory
-    try {
-      Scanner sc = new Scanner( new File(inputFile) );
-
-      System.out.println( "reading in file..." );
-
-      int row = 0;
-
-      while( sc.hasNext() ) {
-
-        String line = sc.nextLine();
-
-        if ( w < line.length() )
-          w = line.length();
-
-        for( int i=0; i<line.length(); i++ )
-        {
-          _maze[i][row] = line.charAt( i );
-        }
-        h++;
-        row++;
-      }
-
-      for( int i=0; i<w; i++ )
-      {
-        _maze[i][row] = ' ';
-      }
-      h++;
-      row++;
-
-    } catch( Exception e ) { System.out.println( "Error reading file" ); }
+    
   }//end constructor
 
   public String toString()
   {
     String retStr = "[0;0H";
     int i, j;
-    for( i=0; i<h; i++ ) {
-      for( j=0; j<w; j++ ) {
+    for( i=0; i<_maze[0].length; i++ ) {
+      for( j=0; j<_maze.length; j++ ) {
         if (j == pacman.getPX() && i == pacman.getPY()) {
           retStr += YELLOW + "P" + WHITE;
         }
@@ -113,25 +81,25 @@ public class Woo {
 
   public void setup()
   {
-    pacman.setPX(10);
+    pacman.setPX(8);
     pacman.setPY(10);
 
-    clyde.movePacman(10,10);
-    inky.movePacman(10,10);
-    blinky.movePacman(10,10);
-    pinky.movePacman(10,10);
+    // clyde.movePacman(10,10);
+    // inky.movePacman(10,10);
+    // blinky.movePacman(10,10);
+    // pinky.movePacman(10,10);
 
-    clyde.setGX(9);
-    clyde.setGY(6);
+    // clyde.setGX(9);
+    // clyde.setGY(6);
 
-    inky.setGX(24);
-    inky.setGY(14);
+    // inky.setGX(24);
+    // inky.setGY(14);
 
-    blinky.setGX(26);
-    blinky.setGY(19);
+    // blinky.setGX(26);
+    // blinky.setGY(19);
 
-    pinky.setGX(21);
-    pinky.setGY(3);
+    // pinky.setGX(21);
+    // pinky.setGY(3);
 
     //pacman.turn("D");
     //clyde.addMove("D");
@@ -140,7 +108,7 @@ public class Woo {
 
   public void play() // RUDIMENTARY turn
   {
-    while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon()) {
+    while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
       delay(100);
       try {
@@ -148,14 +116,14 @@ public class Woo {
       }
       catch ( Exception e ) { }
       pacman.move();
-      clyde.movePacman(pacman.getPX(),pacman.getPY());
-      clyde.move();
-      inky.movePacman(pacman.getPX(),pacman.getPY());
-      inky.move();
-      blinky.movePacman(pacman.getPX(),pacman.getPY());
-      blinky.move();
-      pinky.movePacman(pacman.getPX(),pacman.getPY());
-      pinky.move();
+      // clyde.movePacman(pacman.getPX(),pacman.getPY());
+      // clyde.move();
+      // inky.movePacman(pacman.getPX(),pacman.getPY());
+      // inky.move();
+      // blinky.movePacman(pacman.getPX(),pacman.getPY());
+      // blinky.move();
+      // pinky.movePacman(pacman.getPX(),pacman.getPY());
+      // pinky.move();
     }
   }
 

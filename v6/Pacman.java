@@ -8,13 +8,16 @@ import java.util.*;
 
 public class Pacman {
   private char[][] _maze;
+  int score;
   int h,w;
   int pX, pY;
   int dX, dY; // change in pacman's motion (derivative teehee)
+  int dots;
 
   // CONSTRUCTOR
   public Pacman( String inputFile )
   {
+    score = 0;
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
     _maze = new char[80][41];
@@ -53,7 +56,7 @@ public class Pacman {
 
     } catch( Exception e ) { System.out.println( "Error reading file" ); }
 
-    //at init time, maze has not been solved:
+    dottify();
   }//end constructor
 
   // ACCESSORS
@@ -67,6 +70,10 @@ public class Pacman {
     return pY;
   }
 
+  public char[][] getMap() {
+    return _maze;
+  }
+
   // MUTATORS
   public void setPX(int x)
   {
@@ -76,6 +83,17 @@ public class Pacman {
   public void setPY(int y)
   {
     pY = y;
+  }
+
+  public void dottify() {
+    for (int i = 0; i < _maze.length; i++) {
+      for (int j = 0; j < _maze[0].length; j++) {
+        if (_maze[i][j] == '#') {
+          _maze[i][j] = '.';
+          dots++;
+        }
+      }
+    }
   }
 
   public void turn(String direction) {
@@ -100,10 +118,21 @@ public class Pacman {
 
   // MOVING
   public void move() {
-    if (_maze[pX+dX][pY+dY] == '#') {
-      pX = pX+dX;
-      pY = pY+dY;
+    if (_maze[pX+dX][pY+dY] == '.') {
+      pX += dX;
+      pY += dY;
+      _maze[pX][pY] = '#';
+      score += 10;
+      dots--;
     }
+    else if (_maze[pX+dX][pY+dY] == '#') {
+      pX += dX;
+      pY += dY;
+    }
+  }
+
+  public boolean hasWon() {
+    return dots == 0;
   }
 
   // FOR TESTING
