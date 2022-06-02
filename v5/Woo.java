@@ -34,6 +34,7 @@ public class Woo {
     pacman = new Pacman(inputFile);
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
+    System.out.println(CLEAR);
     _maze = new char[80][41];
     h = 0;
     w = 0;
@@ -73,7 +74,7 @@ public class Woo {
 
   public String toString()
   {
-    String retStr = CLEAR;
+    String retStr = "[0;0H";
     int i, j;
     for( i=0; i<h; i++ ) {
       for( j=0; j<w; j++ ) {
@@ -112,13 +113,13 @@ public class Woo {
 
   public void setup()
   {
-    pacman.setPX(4);
-    pacman.setPY(8);
+    pacman.setPX(7);
+    pacman.setPY(30);
 
-    clyde.movePacman(4,8);
-    inky.movePacman(4,8);
-    blinky.movePacman(4,8);
-    pinky.movePacman(4,8);
+    clyde.movePacman(7,30);
+    inky.movePacman(7,30);
+    blinky.movePacman(7,30);
+    pinky.movePacman(7,30);
 
     clyde.setGX(6);
     clyde.setGY(6);
