@@ -19,7 +19,7 @@ public class Woo {
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
   public static final String WHITE = "\u001B[37m";
-  public static final String ORANGE = "\u001b[31m";
+  public static final String ORANGE = "\u001b[38;5;208m"; // only works on 256 color terminal
   public static final String MAGENTA = "\u001B[35m";
   public static final String RED = "\u001B[31m";
 
@@ -77,20 +77,20 @@ public class Woo {
     int i, j;
     for( i=0; i<h; i++ ) {
       for( j=0; j<w; j++ ) {
-        if (j == clyde.getGX() && i == clyde.getGY()) {
-          retStr += ORANGE + "C" + WHITE;
-        }
-        else if (j == pacman.getPX() && i == pacman.getPY()) {
+        if (j == pacman.getPX() && i == pacman.getPY()) {
           retStr += YELLOW + "P" + WHITE;
         }
+        else if (j == clyde.getGX() && i == clyde.getGY()) {
+          retStr += ORANGE + "G" + WHITE;
+        }
         else if (j == inky.getGX() && i == inky.getGY()) {
-          retStr += CYAN + "I" + WHITE;
+          retStr += CYAN + "G" + WHITE;
         }
         else if (j == blinky.getGX() && i == blinky.getGY()) {
-          retStr += RED + "B" + WHITE;
+          retStr += RED + "G" + WHITE;
         }
         else if (j == pinky.getGX() && i == pinky.getGY()) {
-          retStr += MAGENTA + "P" + WHITE;
+          retStr += MAGENTA + "G" + WHITE;
         }
         else {
           retStr += _maze[j][i];
