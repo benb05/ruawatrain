@@ -79,6 +79,7 @@ public class Pacman {
   }
 
   public void turn(String direction) {
+    direction = direction.toUpperCase();
     if (direction.equals("W")) {
       dX = 0;
       dY = -1;

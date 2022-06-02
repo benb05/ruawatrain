@@ -7,12 +7,15 @@ import java.io.*;
 import java.util.*;
 
 public class Woo {
-  Ghost inky,blinky,pinky,clyde;  // just using clyde,inky for now (favorite names) (both smart)
-  Pacman pacman;
-  char[][] _maze;
-  int h,w;
+  private Ghost inky,blinky,pinky,clyde;  // just using clyde,inky for now (favorite names) (both smart)
+  private Pacman pacman;
+  private char[][] _maze;
+  private int h,w;
+  private InputStreamReader isr;
+  private BufferedReader in;
 
   // COLORS BC WHY NOT
+  public static final String CLEAR = "\033[H\033[2J[0;0H";
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
   public static final String WHITE = "\u001B[37m";
@@ -20,6 +23,8 @@ public class Woo {
 
   public Woo( String inputFile )
   {
+    isr = new InputStreamReader( System.in );
+    in = new BufferedReader( isr );
     clyde = new Ghost(inputFile);
     inky = new Ghost(inputFile);
     pacman = new Pacman(inputFile);
@@ -64,28 +69,24 @@ public class Woo {
 
   public String toString()
   {
-    //send ANSI code "ESC[0;0H" to place cursor in upper left
-    String retStr = "[0;0H";
-    //emacs shortcut: C-q, ESC
-    //emacs shortcut: M-x quoted-insert, ESC
-
+    String retStr = CLEAR;
     int i, j;
     for( i=0; i<h; i++ ) {
       for( j=0; j<w; j++ ) {
         if (j == clyde.getGX() && i == clyde.getGY()) {
-          retStr = retStr + ORANGE + "C" + WHITE;
+          retStr += ORANGE + "C" + WHITE;
         }
         else if (j == pacman.getPX() && i == pacman.getPY()) {
-          retStr = retStr + YELLOW + "P" + WHITE;
+          retStr += YELLOW + "P" + WHITE;
         }
         else if (j == inky.getGX() && i == inky.getGY()) {
-          retStr = retStr + CYAN + "I" + WHITE;
+          retStr += CYAN + "I" + WHITE;
         }
         else {
-          retStr = retStr + _maze[j][i];
+          retStr += _maze[j][i];
         }
       }
-      retStr = retStr + "\n";
+      retStr += "\n";
     }
     return retStr;
   }
@@ -113,9 +114,9 @@ public class Woo {
     inky.setGX(26);
     inky.setGY(14);
 
-    pacman.turn("D");
-    clyde.addMove("D");
-    inky.addMove("D");
+    //pacman.turn("D");
+    //clyde.addMove("D");
+    //inky.addMove("D");
   }
 
   public void play() // RUDIMENTARY turn
@@ -123,6 +124,10 @@ public class Woo {
     while (!clyde.hasWon() && !inky.hasWon()) {
       System.out.println(this);
       delay(100);
+      try {
+        pacman.turn(in.readLine());
+      }
+      catch ( Exception e ) { }
       pacman.move();
       clyde.movePacman(pacman.getPX(),pacman.getPY());
       clyde.move();
