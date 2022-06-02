@@ -12,7 +12,6 @@ public class Woo {
   char[][] _maze;
   int h,w;
 
-  public static final String CLEAR = "\033[H\033[2J[0;0H";
   // COLORS BC WHY NOT
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
@@ -21,21 +20,20 @@ public class Woo {
 
   public Woo( String inputFile )
   {
-    if (inputFile == null) {
-      System.exit(0);
-    }
     clyde = new Ghost(inputFile);
     inky = new Ghost(inputFile);
     pacman = new Pacman(inputFile);
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
-    _maze = new char[80][25];
+    _maze = new char[80][40];
     h = 0;
     w = 0;
 
     //transcribe maze from file into memory
     try {
       Scanner sc = new Scanner( new File(inputFile) );
+
+      System.out.println( "reading in file..." );
 
       int row = 0;
 
@@ -66,24 +64,28 @@ public class Woo {
 
   public String toString()
   {
-    String retStr = CLEAR;
+    //send ANSI code "ESC[0;0H" to place cursor in upper left
+    String retStr = "[0;0H";
+    //emacs shortcut: C-q, ESC
+    //emacs shortcut: M-x quoted-insert, ESC
+
     int i, j;
     for( i=0; i<h; i++ ) {
       for( j=0; j<w; j++ ) {
         if (j == clyde.getGX() && i == clyde.getGY()) {
-          retStr += ORANGE + "C" + WHITE;
+          retStr = retStr + ORANGE + "C" + WHITE;
         }
         else if (j == pacman.getPX() && i == pacman.getPY()) {
-          retStr += YELLOW + "P" + WHITE;
+          retStr = retStr + YELLOW + "P" + WHITE;
         }
         else if (j == inky.getGX() && i == inky.getGY()) {
-          retStr += CYAN + "I" + WHITE;
+          retStr = retStr + CYAN + "I" + WHITE;
         }
         else {
-          retStr += _maze[j][i];
+          retStr = retStr + _maze[j][i];
         }
       }
-      retStr += "\n";
+      retStr = retStr + "\n";
     }
     return retStr;
   }
@@ -100,16 +102,16 @@ public class Woo {
   public void setup()
   {
     pacman.setPX(4);
-    pacman.setPY(8);
+    pacman.setPY(9);
 
-    clyde.movePacman(4,8);
-    inky.movePacman(4,8);
+    clyde.movePacman(4,9);
+    inky.movePacman(4,9);
 
     clyde.setGX(6);
-    clyde.setGY(3);
+    clyde.setGY(5);
 
-    inky.setGX(19);
-    inky.setGY(16);
+    inky.setGX(26);
+    inky.setGY(14);
 
     pacman.turn("D");
     clyde.addMove("D");
@@ -118,7 +120,6 @@ public class Woo {
 
   public void play() // RUDIMENTARY turn
   {
-    setup();
     while (!clyde.hasWon() && !inky.hasWon()) {
       System.out.println(this);
       delay(100);
@@ -132,15 +133,20 @@ public class Woo {
 
   public static void main( String[] args )
   {
+    String mazeInputFile = null;
+
     try {
-      String mazeInputFile = args[0
-      ];
-      Woo game = new Woo(mazeInputFile);
-      game.play();
-    }
-    catch( Exception e ) {
+      mazeInputFile = args[0];
+    } catch( Exception e ) {
       System.out.println( "Error reading input file." );
       System.out.println( "USAGE:\n $ java Maze path/to/filename" );
     }
+
+    if (mazeInputFile==null) { System.exit(0); }
+
+    Woo game = new Woo(mazeInputFile);
+
+    game.setup();
+    game.play();
   }
 }
