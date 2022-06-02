@@ -11,7 +11,6 @@ public class Woo {
   private Pacman pacman;
   private char[][] _maze;
   private int h,w;
-  private InputStreamReader isr;
   private BufferedReader in;
 
   // COLORS BC WHY NOT
@@ -25,15 +24,13 @@ public class Woo {
 
   public Woo( String inputFile )
   {
-    isr = new InputStreamReader( System.in );
-    in = new BufferedReader( isr );
+    in = new BufferedReader( new InputStreamReader(System.in) );
     clyde = new Ghost(inputFile);
     inky = new Ghost(inputFile);
     pinky = new Ghost(inputFile);
     blinky = new Ghost(inputFile);
     pacman = new Pacman(inputFile);
     _maze = pacman.getMap();
-    System.out.println("This is idk" + _maze[10][10]);
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
     System.out.println(CLEAR);
