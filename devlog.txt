@@ -85,6 +85,20 @@ DD :: <Thing member did.>
 JM :: Worked on Pacman class, built basic Woo, minor ghost optimization
 ==============================================================
 
+2022-06-01
+--------------------------------------------------------------
+BB :: Pacman movement optimization
+DD :: Pacman movement optimization
+JM :: Pacman movement optimization and BFS
+==============================================================
+
+2022-06-01
+--------------------------------------------------------------
+BB :: Pacman user movement
+DD :: Pacman user movement
+JM :: Pacman user movement
+==============================================================
+
 2022-mm-dd
 --------------------------------------------------------------
 BB :: <Thing member did.>
