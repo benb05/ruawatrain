@@ -113,18 +113,18 @@ public class Woo {
 
   public void setup()
   {
-    pacman.setPX(7);
-    pacman.setPY(30);
+    pacman.setPX(11);
+    pacman.setPY(10);
 
-    clyde.movePacman(7,30);
-    inky.movePacman(7,30);
-    blinky.movePacman(7,30);
-    pinky.movePacman(7,30);
+    clyde.movePacman(11,10);
+    inky.movePacman(11,10);
+    blinky.movePacman(11,10);
+    pinky.movePacman(11,10);
 
-    clyde.setGX(6);
+    clyde.setGX(9);
     clyde.setGY(6);
 
-    inky.setGX(26);
+    inky.setGX(25);
     inky.setGY(14);
 
     blinky.setGX(26);
