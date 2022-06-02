@@ -96,7 +96,7 @@ JM :: Pacman movement optimization and BFS
 --------------------------------------------------------------
 BB :: Pacman user movement
 DD :: Pacman user movement
-JM :: Pacman user movement
+JM :: Pacman user movement, pretifying toString
 ==============================================================
 
 2022-mm-dd
