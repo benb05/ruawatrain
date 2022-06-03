@@ -34,7 +34,7 @@ public class Woo {
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
     System.out.println(CLEAR);
-    
+
   }//end constructor
 
   public String toString()
@@ -81,26 +81,22 @@ public class Woo {
     pacman.setPX(8);
     pacman.setPY(10);
 
-    // clyde.movePacman(10,10);
-    // inky.movePacman(10,10);
-    // blinky.movePacman(10,10);
-    // pinky.movePacman(10,10);
+    clyde.movePacman(10,10);
+    inky.movePacman(10,10);
+    blinky.movePacman(10,10);
+    pinky.movePacman(10,10);
 
-    // clyde.setGX(9);
-    // clyde.setGY(6);
+    clyde.setGX(9);
+    clyde.setGY(6);
 
-    // inky.setGX(24);
-    // inky.setGY(14);
+    inky.setGX(24);
+    inky.setGY(14);
 
-    // blinky.setGX(26);
-    // blinky.setGY(19);
+    blinky.setGX(26);
+    blinky.setGY(19);
 
-    // pinky.setGX(21);
-    // pinky.setGY(3);
-
-    //pacman.turn("D");
-    //clyde.addMove("D");
-    //inky.addMove("D");
+    pinky.setGX(21);
+    pinky.setGY(3);
   }
 
   public void play() // RUDIMENTARY turn
@@ -113,14 +109,14 @@ public class Woo {
       }
       catch ( Exception e ) { }
       pacman.move();
-      // clyde.movePacman(pacman.getPX(),pacman.getPY());
-      // clyde.move();
-      // inky.movePacman(pacman.getPX(),pacman.getPY());
-      // inky.move();
-      // blinky.movePacman(pacman.getPX(),pacman.getPY());
-      // blinky.move();
-      // pinky.movePacman(pacman.getPX(),pacman.getPY());
-      // pinky.move();
+      clyde.movePacman(pacman.getPX(),pacman.getPY());
+      clyde.move();
+      inky.movePacman(pacman.getPX(),pacman.getPY());
+      inky.move();
+      blinky.movePacman(pacman.getPX(),pacman.getPY());
+      blinky.move();
+      pinky.movePacman(pacman.getPX(),pacman.getPY());
+      pinky.move();
     }
   }
 

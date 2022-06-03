@@ -107,7 +107,7 @@ public class Ghost {
   // SOLVER
   public void solve( int x, int y )
   {
-    //delay(10);  // to be removed post testing era
+    //delay(20);  // to be removed post testing era
 
     //primary base case
     if ( _solved ) {
