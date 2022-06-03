@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Pacman {
   private char[][] _maze;
+  String currentDirection;
   int score;
   int h,w;
   int pX, pY;
@@ -21,6 +22,7 @@ public class Pacman {
     // init 2D array to represent maze
     // (80x25 is default terminal window size)
     _maze = new char[80][41];
+    currentDirection = null;
     h = 0;
     w = 0;
 
@@ -99,20 +101,30 @@ public class Pacman {
   public void turn(String direction) {
     direction = direction.toUpperCase();
     if (direction.equals("W")) {
+      currentDirection = "W";
       dX = 0;
       dY = -1;
     }
     else if (direction.equals("A")) {
+      currentDirection = "A";
       dX = -1;
       dY = 0;
     }
     else if (direction.equals("S")) {
+      currentDirection = "S";
       dX = 0;
       dY = 1;
     }
     else if (direction.equals("D")) {
+      currentDirection = "D";
       dX = 1;
       dY = 0;
+    }
+  }
+
+  public void turn() {
+    if (! (currentDirection == null)) {
+      turn(currentDirection);
     }
   }
 
