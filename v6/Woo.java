@@ -105,6 +105,9 @@ public class Woo {
       System.out.println(this);
       delay(100);
       try {
+        boolean input = false;
+        long start = System.currentTimeMillis();
+        boolean input = false;
         pacman.turn(in.readLine());
       }
       catch ( Exception e ) { }
