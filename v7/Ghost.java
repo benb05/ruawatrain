@@ -245,8 +245,24 @@ public class Ghost {
   // RANDOM MOVER
   public void randomMove()
   {
+    int rint;
+    if (onPath(gX + ( (dX+1)%2 ),gY + ( (dY+1)%2 )) || onPath(gX - ( (dX+1)%2 ),gY - ( (dY+1)%2 ))) {
+      rint = (int) (3*Math.random());
+      if (rint == 0) {
+        dX = dX;
+        dY = dY;
+      }
+      else if (rint == 1) {
+        dX = (dX+1)%2;
+        dY = (dY+1)%2;
+      }
+      else if (rint == 2) {
+        dX = -( (dX+1)%2 );
+        dY = -( (dY+1)%2 );
+      }
+    }
     while (!onPath(gX+dX, gY+dY)) {
-      int rint = (int) (4*Math.random());
+      rint = (int) (4*Math.random());
       if (rint == 0) {
         dX = 1;
         dY = 0;
@@ -273,7 +289,7 @@ public class Ghost {
 
   // ONPATH
   public boolean onPath( int x, int y) {
-    if (_maze[x][y] != '#'){
+    if (_maze[x][y] != '#' && _maze[x][y] != '$'){
       return false;
     } else {
       return true;

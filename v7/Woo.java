@@ -103,7 +103,7 @@ public class Woo {
   {
     while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
-      delay(100);
+      //delay(100);
       try {
         pacman.turn(in.readLine());
       }
