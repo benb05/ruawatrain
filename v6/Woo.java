@@ -5,6 +5,7 @@
 //enable file I/O
 import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
 public class Woo {
   private Ghost inky,blinky,pinky,clyde;  // just using clyde,inky for now (favorite names) (both smart)
@@ -99,18 +100,15 @@ public class Woo {
     pinky.setGY(3);
   }
 
-  public void play() // RUDIMENTARY turn
+  public void play() throws IOException // RUDIMENTARY turn
   {
+    RunTracker rt = new RunTracker();
+    rt.start();
     while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
       delay(100);
-      try {
-        boolean input = false;
-        long start = System.currentTimeMillis();
-        boolean input = false;
-        pacman.turn(in.readLine());
-      }
-      catch ( Exception e ) { }
+      
+      pacman.turn(in.readLine());
       pacman.move();
       clyde.movePacman(pacman.getPX(),pacman.getPY());
       clyde.move();
