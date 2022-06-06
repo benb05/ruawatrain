@@ -120,9 +120,9 @@ DD :: <Thing member did.>
 JM :: Random movement mixed with strategic
 ==============================================================
 
-2022-06-dd
+2022-06-06
 --------------------------------------------------------------
-BB :: <Thing member did.>
-DD :: <Thing member did.>
-JM :: <Thing member did.>
+BB ::  fixed bugs in code
+DD :: worked on removing enter requirement for input
+JM :: Fixed bugs in code
 ==============================================================
