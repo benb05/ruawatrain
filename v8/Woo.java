@@ -25,10 +25,10 @@ public class Woo {
   public Woo( String inputFile )
   {
     in = new BufferedReader( new InputStreamReader(System.in) );
-    clyde = new Ghost(inputFile);
-    inky = new Ghost(inputFile);
-    pinky = new Ghost(inputFile);
-    blinky = new Ghost(inputFile);
+    clyde = new Ghost(inputFile, 1);
+    inky = new Ghost(inputFile, 2);
+    pinky = new Ghost(inputFile, 3);
+    blinky = new Ghost(inputFile, 4);
     pacman = new Pacman(inputFile);
     _maze = pacman.getMap();
     // init 2D array to represent maze
@@ -39,7 +39,7 @@ public class Woo {
 
   public String toString()
   {
-    String retStr = "[0;0H";
+    String retStr = "[0;0H" + "Score: " + pacman.getScore();
     int i, j;
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
@@ -78,8 +78,7 @@ public class Woo {
 
   public void setup()
   {
-    pacman.setPX(20);
-    pacman.setPY(16);
+    pacman.movePacman(20,16);
 
     clyde.movePacman(20,16);
     inky.movePacman(20,16);

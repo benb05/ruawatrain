@@ -237,9 +237,9 @@ public class Ghost {
   // TURN
   public void move()
   {
-    //solve(gX,gY);
-    randomMove();
-    //reset();
+    solve(gX,gY);
+    //randomMove();
+    reset();
   }
 
   // RANDOM MOVER

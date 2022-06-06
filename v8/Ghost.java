@@ -9,21 +9,22 @@ import java.util.*;
 public class Ghost {
   private char[][] _maze;
   int h,w;
+  private int intelligence;
   private int gX, gY; // ghost's position
   private int dX, dY; // ghost's movement (for random)
-  private int pX = 0;
-  private int pY = 0; // pacman's position
+  private int pX, pY;
   private boolean _solved;
   private boolean _won;
+  private int difficulty; // from 1 to 4, the higher the number the higher difficulty
 
   // CONSTRUCTOR
-  public Ghost( String inputFile )
+  public Ghost( String inputFile, int d )
   {
+    difficulty = d;
+    intelligence = 1;
     _won = false;
     dX = 1;
     dY = 0;
-    // init 2D array to represent maze
-    // (80x25 is default terminal window size)
     _maze = new char[80][41];
     h = 0;
     w = 0;
@@ -235,18 +236,64 @@ public class Ghost {
   }
 
   // TURN
+  public void step() {
+    if (intelligence == 1) {
+      solve(gX,gY);
+    }
+    else {
+      randomMove();
+    }
+  }
+  public void updateIntelligence()
+  {
+    int rint = (int) (8*Math.random());
+    if (difficulty == 4) {
+      intelligence=1;
+    }
+    else if (difficulty == 3) {
+      if (rint > 6) {
+        intelligence=0;
+      }
+      else {
+        intelligence=1;
+      }
+    }
+    else if (difficulty == 2) {
+      if (rint > 3) {
+        intelligence=0;
+      }
+      else {
+        intelligence=1;
+      }
+    }
+    else {
+      if (rint > 1) {
+        intelligence=0;
+      }
+      else {
+        intelligence=1;
+      }
+    }
+  }
   public void move()
   {
-    solve(gX,gY);
-    //randomMove();
+    if (atIntersection()) {
+      updateIntelligence();
+    }
+    step();
     reset();
+  }
+
+  // INTERSECTION DETECTOR
+  public boolean atIntersection() {
+    return onPath(gX + ( (dX+1)%2 ),gY + ( (dY+1)%2 )) || onPath(gX - ( (dX+1)%2 ),gY - ( (dY+1)%2 ));
   }
 
   // RANDOM MOVER
   public void randomMove()
   {
     int rint;
-    if (onPath(gX + ( (dX+1)%2 ),gY + ( (dY+1)%2 )) || onPath(gX - ( (dX+1)%2 ),gY - ( (dY+1)%2 ))) {
+    if (atIntersection()) {
       rint = (int) (3*Math.random());
       if (rint == 0) {
         dX = dX;
@@ -334,50 +381,6 @@ public class Ghost {
   // MAIN
   public static void main( String[] args )
   {
-    String mazeInputFile = null;
-
-    try {
-      mazeInputFile = args[0];
-    } catch( Exception e ) {
-      System.out.println( "Error reading input file." );
-      System.out.println( "USAGE:\n $ java Maze path/to/filename" );
-    }
-
-    if (mazeInputFile==null) { System.exit(0); }
-
-    Ghost ms = new Ghost( mazeInputFile );
-
-    //clear screen
-    System.out.println( "[2J" );
-
-    //display maze
-    System.out.println( ms );
-
-    ms.setGX(6);
-    ms.setGY(3);
-    ms.move();
-    ms.movePacman(4,8);
-    ms.move();
-    ms.movePacman(5,8);
-    ms.move();
-    ms.movePacman(6,8);
-    ms.move();
-    ms.movePacman(7,8);
-    ms.move();
-    ms.movePacman(8,8);
-    ms.move();
-    ms.movePacman(8,9);
-    ms.move();
-    ms.movePacman(8,10);
-    ms.move();
-    ms.movePacman(8,11);
-    ms.move();
-    ms.movePacman(8,12);
-    ms.move();
-    ms.movePacman(8,13);
-    ms.move();
-    ms.movePacman(8,14);
-    ms.play();
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   }//end main()

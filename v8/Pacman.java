@@ -74,15 +74,20 @@ public class Pacman {
     return _maze;
   }
 
-  // MUTATORS
-  public void setPX(int x)
+  public int getScore()
   {
-    pX = x;
+    return score;
   }
 
-  public void setPY(int y)
+  // MUTATORS
+  public void movePacman(int x, int y)
   {
+    pX = x;
     pY = y;
+    if (_maze[pX][pY] == '.') {
+      score += 10;
+      _maze[pX][pY] = '#';
+    }
   }
 
   public void dottify() {
