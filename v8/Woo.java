@@ -25,10 +25,10 @@ public class Woo {
   public Woo( String inputFile )
   {
     in = new BufferedReader( new InputStreamReader(System.in) );
-    clyde = new Ghost(inputFile, 1);
-    inky = new Ghost(inputFile, 2);
-    pinky = new Ghost(inputFile, 3);
-    blinky = new Ghost(inputFile, 4);
+    clyde = new Ghost(inputFile, 1);  // orange
+    inky = new Ghost(inputFile, 2); // cyan
+    pinky = new Ghost(inputFile, 3);  // pink
+    blinky = new Ghost(inputFile, 4); // red
     pacman = new Pacman(inputFile);
     _maze = pacman.getMap();
     // init 2D array to represent maze
@@ -39,14 +39,11 @@ public class Woo {
 
   public String toString()
   {
-    String retStr = "[0;0H" + "Score: " + pacman.getScore();
+    String retStr = "Score: " + pacman.getScore(); //JUST IN CASE add back clear screen later "[0;0H"
     int i, j;
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
-        if (j == pacman.getPX() && i == pacman.getPY()) {
-          retStr += YELLOW + "P" + WHITE;
-        }
-        else if (j == clyde.getGX() && i == clyde.getGY()) {
+        if (j == clyde.getGX() && i == clyde.getGY()) {
           retStr += ORANGE + "G" + WHITE;
         }
         else if (j == inky.getGX() && i == inky.getGY()) {
@@ -57,6 +54,9 @@ public class Woo {
         }
         else if (j == pinky.getGX() && i == pinky.getGY()) {
           retStr += MAGENTA + "G" + WHITE;
+        }
+        else if (j == pacman.getPX() && i == pacman.getPY()) {
+          retStr += YELLOW + "P" + WHITE;
         }
         else {
           retStr += _maze[j][i];
@@ -116,6 +116,13 @@ public class Woo {
       blinky.move();
       pinky.movePacman(pacman.getPX(),pacman.getPY());
       pinky.move();
+    }
+    System.out.println(this);
+    if (pacman.hasWon()) {
+      System.out.println("You won!! Congratulations!");
+    }
+    else {
+      System.out.println("A ghost killed you.\nYour final score was " + pacman.getScore() + "\nBetter luck next time!");
     }
   }
 

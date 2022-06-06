@@ -117,26 +117,29 @@ public class Ghost {
       _solved = true;
       //System.out.println( this ); // to be removed post testing era
       if (_maze[gX][gY+1] == '@') {
-        gX = gX;
-        gY = gY+1;
+        dX = 0;
+        dY = 1;
       }
       else if (_maze[gX][gY-1] == '@') {
-        gX = gX;
-        gY = gY-1;
+        dX = 0;
+        dY = -1;
       }
       else if (_maze[gX+1][gY] == '@') {
-        gX = gX+1;
-        gY = gY;
+        dX = 1;
+        dY = 0;
       }
       else if (_maze[gX-1][gY] == '@') {
-        gX = gX-1;
-        gY = gY;
+        dX = -1;
+        dY = 0;
       }
       else {
+        _won = true;
         gX = x;
         gY = y;
-        _won = true;
+        return;
       }
+      gX = gX+dX;
+      gY = gY+dY;
       return;
     }
     else if ( _maze[x][y] != '#' ) {
@@ -237,11 +240,17 @@ public class Ghost {
 
   // TURN
   public void step() {
+    if (_maze[gX][gY] == '$') {
+      _won = true;
+    }
     if (intelligence == 1) {
       solve(gX,gY);
     }
     else {
       randomMove();
+    }
+    if (_maze[gX][gY] == '$') {
+      _won = true;
     }
   }
   public void updateIntelligence()
@@ -329,9 +338,6 @@ public class Ghost {
     }
     gX = gX + dX;
     gY = gY + dY;
-    if (_maze[gX][gY] == '$') {
-      _won = true;
-    }
   }
 
   // ONPATH
