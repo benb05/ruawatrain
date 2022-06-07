@@ -12,6 +12,7 @@ public class Pacman {
   int h,w;
   int pX, pY;
   int dX, dY; // change in pacman's motion (derivative teehee)
+  int ndX, ndY; // storing the next dX,dY
   int dots;
 
   // CONSTRUCTOR
@@ -104,25 +105,33 @@ public class Pacman {
   public void turn(String direction) {
     direction = direction.toUpperCase();
     if (direction.equals("W")) {
-      dX = 0;
-      dY = -1;
+      ndX = 0;
+      ndY = -1;
     }
     else if (direction.equals("A")) {
-      dX = -1;
-      dY = 0;
+      ndX = -1;
+      ndY = 0;
     }
     else if (direction.equals("S")) {
-      dX = 0;
-      dY = 1;
+      ndX = 0;
+      ndY = 1;
     }
     else if (direction.equals("D")) {
-      dX = 1;
-      dY = 0;
+      ndX = 1;
+      ndY = 0;
+    }
+    if (onPath(pX+ndX, pY+ndY)) {
+      dX=ndX;
+      dY=ndY;
     }
   }
 
   // MOVING
   public void move() {
+    if (onPath(pX+ndX,pY+ndY)) {
+      dX=ndX;
+      dY=ndY;
+    }
     if (_maze[pX+dX][pY+dY] == '.') {
       pX += dX;
       pY += dY;
@@ -138,6 +147,18 @@ public class Pacman {
 
   public boolean hasWon() {
     return dots == 0;
+  }
+
+  public boolean atIntersection() {
+    return onPath(pX + ( (dX+1)%2 ),pY + ( (dY+1)%2 )) || onPath(pX - ( (dX+1)%2 ),pY - ( (dY+1)%2 ));
+  }
+
+  public boolean onPath( int x, int y) {
+    if (_maze[x][y] != '#' && _maze[x][y] != '.'){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // FOR TESTING
