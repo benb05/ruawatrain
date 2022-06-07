@@ -39,7 +39,7 @@ public class Woo {
 
   public String toString()
   {
-    String retStr = CLEAR + "Score: " + pacman.getScore(); //JUST IN CASE add back clear screen later "[0;0H"
+    String retStr = "[0;0H" + "Score: " + pacman.getScore(); //JUST IN CASE add back clear screen later "[0;0H"
     int i, j;
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
