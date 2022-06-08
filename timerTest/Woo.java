@@ -78,20 +78,33 @@ public class Woo {
 
   public void setup()
   {
-    pacman.setPos(20,16);
+    int x = 0;
+    int y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+    pacman.setPos(x,y);
 
-    clyde.movePacman(20,16);
-    inky.movePacman(20,16);
-    blinky.movePacman(20,16);
-    pinky.movePacman(20,16);
+    clyde.movePacman(x,y);
+    inky.movePacman(x,y);
+    blinky.movePacman(x,y);
+    pinky.movePacman(x,y);
 
-    clyde.setPos(9,6);
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
 
-    inky.setPos(24,14);
+    clyde.setPos(x,y);
 
-    blinky.setPos(26,19);
+    inky.setPos(x,y);
 
-    pinky.setPos(21,3);
+    blinky.setPos(x,y);
+
+    pinky.setPos(x,y);
   }
 
   public void play() // RUDIMENTARY turn

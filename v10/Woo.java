@@ -25,10 +25,10 @@ public class Woo {
   public Woo( String inputFile )
   {
     in = new BufferedReader( new InputStreamReader(System.in) );
-    clyde = new Ghost(inputFile, 0);  // orange
-    inky = new Ghost(inputFile, 0); // cyan
-    pinky = new Ghost(inputFile, 0);  // pink
-    blinky = new Ghost(inputFile, 0); // red
+    clyde = new Ghost(inputFile, 1);  // orange
+    inky = new Ghost(inputFile, 2); // cyan
+    pinky = new Ghost(inputFile, 3);  // pink
+    blinky = new Ghost(inputFile, 4); // red
     pacman = new Pacman(inputFile);
     _maze = pacman.getMap();
     // init 2D array to represent maze

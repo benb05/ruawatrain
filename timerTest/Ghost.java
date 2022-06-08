@@ -201,10 +201,15 @@ public class Ghost extends Character{
   { // update intelligence based on difficulty level, the higher the difficulty the higher the chance for intelligence
     int rint = (int) (8*Math.random());
     if (difficulty == 4) {
-      intelligence=1;
+      if (rint > 6) {
+        intelligence=0;
+      }
+      else {
+        intelligence=1;
+      }
     }
     else if (difficulty == 3) {
-      if (rint > 6) {
+      if (rint > 5) {
         intelligence=0;
       }
       else {
