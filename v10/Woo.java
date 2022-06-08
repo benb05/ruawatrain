@@ -43,19 +43,19 @@ public class Woo {
     int i, j;
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
-        if (j == clyde.getGX() && i == clyde.getGY()) {
+        if (j == clyde.getX() && i == clyde.getY()) {
           retStr += ORANGE + "G" + WHITE;
         }
-        else if (j == inky.getGX() && i == inky.getGY()) {
+        else if (j == inky.getX() && i == inky.getY()) {
           retStr += CYAN + "G" + WHITE;
         }
-        else if (j == blinky.getGX() && i == blinky.getGY()) {
+        else if (j == blinky.getX() && i == blinky.getY()) {
           retStr += RED + "G" + WHITE;
         }
-        else if (j == pinky.getGX() && i == pinky.getGY()) {
+        else if (j == pinky.getX() && i == pinky.getY()) {
           retStr += MAGENTA + "G" + WHITE;
         }
-        else if (j == pacman.getPX() && i == pacman.getPY()) {
+        else if (j == pacman.getX() && i == pacman.getY()) {
           retStr += YELLOW + "P" + WHITE;
         }
         else {
@@ -78,24 +78,20 @@ public class Woo {
 
   public void setup()
   {
-    pacman.movePacman(20,16);
+    pacman.setPos(20,16);
 
     clyde.movePacman(20,16);
     inky.movePacman(20,16);
     blinky.movePacman(20,16);
     pinky.movePacman(20,16);
 
-    clyde.setGX(9);
-    clyde.setGY(6);
+    clyde.setPos(9,6);
 
-    inky.setGX(24);
-    inky.setGY(14);
+    inky.setPos(24,14);
 
-    blinky.setGX(26);
-    blinky.setGY(19);
+    blinky.setPos(26,19);
 
-    pinky.setGX(21);
-    pinky.setGY(3);
+    pinky.setPos(21,3);
   }
 
   public void play() // RUDIMENTARY turn
@@ -108,13 +104,13 @@ public class Woo {
       }
       catch ( Exception e ) { }
       pacman.move();
-      clyde.movePacman(pacman.getPX(),pacman.getPY());
+      clyde.movePacman(pacman.getX(),pacman.getY());
       clyde.move();
-      inky.movePacman(pacman.getPX(),pacman.getPY());
+      inky.movePacman(pacman.getX(),pacman.getY());
       inky.move();
-      blinky.movePacman(pacman.getPX(),pacman.getPY());
+      blinky.movePacman(pacman.getX(),pacman.getY());
       blinky.move();
-      pinky.movePacman(pacman.getPX(),pacman.getPY());
+      pinky.movePacman(pacman.getX(),pacman.getY());
       pinky.move();
     }
     System.out.println(this);
