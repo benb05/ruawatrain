@@ -136,6 +136,13 @@ JM :: Pacman logging future moves, cleaning code, timer garbage
 
 2022-06-dd
 --------------------------------------------------------------
+BB :: Random starting position
+DD :: Random starting position
+JM :: Random starting position, map editing
+==============================================================
+
+2022-06-dd
+--------------------------------------------------------------
 BB :: <Thing member did.>
 DD :: <Thing member did.>
 JM :: <Thing member did.>
