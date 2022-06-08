@@ -98,23 +98,20 @@ public class Woo {
   {
     while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
-      try {
-        TimerTask task = new TimerTask()
+      TimerTask task = new TimerTask()
+      {
+        public void run()
         {
-          public void run()
-          {
-            try {
-              pacman.turn(in.readLine());
-            }
-            catch ( Exception e) {}
+          try {
+            pacman.turn(in.readLine());
           }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, 300);
-        delay(300);
-        timer.cancel();
-      }
-      catch ( Exception e ) { }
+          catch ( Exception e) {}
+        }
+      };
+      Timer timer = new Timer();
+      timer.schedule(task, 300);
+      delay(300);
+      timer.cancel();
 
       pacman.move();
       clyde.movePacman(pacman.getX(),pacman.getY());
@@ -133,6 +130,7 @@ public class Woo {
     else {
       System.out.println("A ghost killed you.\nYour final score was " + pacman.getScore() + "\nBetter luck next time!");
     }
+    System.exit(0);
   }
 
   public static void main( String[] args )
