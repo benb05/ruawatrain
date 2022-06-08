@@ -68,7 +68,7 @@ public class Character {
   }
 
   public boolean onPath( int x, int y) {
-    if (_maze[x][y] != '#' && _maze[x][y] != '.'){
+    if (_maze[x][y] != '#' && _maze[x][y] != '.' && _maze[x][y] != '$'){
       return false;
     } else {
       return true;

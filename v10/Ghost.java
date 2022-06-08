@@ -219,13 +219,16 @@ public class Ghost extends Character{
         intelligence=1;
       }
     }
-    else {
+    else if (difficulty == 1){
       if (rint > 1) {
         intelligence=0;
       }
       else {
         intelligence=1;
       }
+    }
+    else {
+      intelligence=0;
     }
   }
 
