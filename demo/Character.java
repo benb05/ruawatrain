@@ -92,7 +92,12 @@ public class Character {
 
     for( int i=0; i<_maze[0].length; i++ ) {
       for( int j=0; j<_maze.length; j++ ) {
-        retStr = retStr + _maze[j][i];
+        if (_maze[j][i] == '@') {
+          retStr = retStr + "\u001b[32m" + _maze[j][i] + "\u001b[0m"; // for demo purposes, probes show up green
+        }
+        else {
+          retStr = retStr + _maze[j][i];
+        }
       }
       retStr = retStr + "\n";
     }
