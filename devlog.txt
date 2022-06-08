@@ -126,3 +126,17 @@ BB ::  fixed bugs in code
 DD :: worked on removing enter requirement for input
 JM :: Fixed bugs in code
 ==============================================================
+
+2022-06-07
+--------------------------------------------------------------
+BB :: Pacman logging future moves
+DD :: No more enter research
+JM :: Pacman logging future moves, cleaning code, timer garbage
+==============================================================
+
+2022-06-dd
+--------------------------------------------------------------
+BB :: <Thing member did.>
+DD :: <Thing member did.>
+JM :: <Thing member did.>
+==============================================================
