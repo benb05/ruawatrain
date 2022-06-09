@@ -134,6 +134,15 @@ public class Woo {
       blinky.move();
       pinky.movePacman(pacman.getX(),pacman.getY());
       pinky.move();
+      if (Pacman.ghostsEaten != 4 && Ghost.movesVulnerable > 0) {
+          Ghost.movesVulnerable--;
+      }
+      else {
+        Pacman.isInvincible = false;
+        Pacman.ghostsEaten = 0;
+        Ghost.movesVulnerable = 0;
+        Ghost.points = 200;
+      }
     }
     System.out.println(this);
     if (pacman.hasWon()) {

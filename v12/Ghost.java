@@ -8,10 +8,9 @@ public class Ghost extends Character{
   private boolean _solved;
   private boolean _won;
   private int difficulty; // from 1 to 4, the higher the number the higher difficulty
-  private boolean isVulnerable; //tracks if current ghost has already been eaten or not
-  private static int movesVulnerable; //tracks number of turns until ghosts are no longer vulnerable
-  private static int points; //tracks value of ghosts
-  private int ghostsEaten; //if all ghosts are eaten, we need to reset some variables
+  private boolean alreadyEaten; //tracks if current ghost has already been eaten or not
+  static int movesVulnerable; //tracks number of turns until ghosts are no longer vulnerable
+  static int points; //tracks value of ghosts
   private int respawnTime; //wait this many turns before ghost reenters map
 
   // CONSTRUCTOR
@@ -24,9 +23,9 @@ public class Ghost extends Character{
     dX = 1;
     dY = 0;
     _solved = false;
+    alreadyEaten = false;
     movesVulnerable = 0;
     points = 200;
-    ghostsEaten = 0;
     respawnTime = 4;
   }//end constructor
 
@@ -34,11 +33,6 @@ public class Ghost extends Character{
   public boolean hasWon()
   {
     return _won;
-  }
-
-  // MUTATORS
-  public static void setMoves(int moves) {
-    movesVulnerable = moves;
   }
 
   public void movePacman(int x, int y) // updates pacman's positioning
@@ -192,43 +186,57 @@ public class Ghost extends Character{
 
   // MOVING
   public void step() {  // the motion we will make
-    if (xPos == 18 && yPos == 21) {
+    if (xPos == 18 && yPos == 17) {
         if (respawnTime > 0) {
             respawnTime--;
+            return;
         }
         else {
             xPos = 19;
             respawnTime = 4;
+            return;
         }
     }
+
     if (_maze[xPos][yPos] == '$') { // ensure pacman hasn't moved on top of us
-      if (isVulnerable && movesVulnerable > 0) {
+      if (!alreadyEaten && movesVulnerable > 0) {
         respawn();
-        isVulnerable = false;
+        alreadyEaten = false;
         Pacman.addScore(points);
-        ghostsEaten++;
-        points = ghostsEaten == 4 ? 0 : points * 2;
+        Pacman.ghostsEaten += 1;
+        points = Pacman.ghostsEaten == 4 ? 0 : points * 2;
+        return;
       }
       else {
         _won = true;
+        return;
       }
     }
+
     if (intelligence) {
       solve(xPos,yPos);
     }
     else {
       randomMove();
     }
+    
     if (_maze[xPos][yPos] == '$') { // post move check
-      _won = true;
+        if (!alreadyEaten && movesVulnerable > 0) {
+            respawn();
+            alreadyEaten = false;
+            Pacman.addScore(points);
+            points *= 2;
+        }
+        else {
+            _won = true;
+        }
     }
   }
 
   public void updateIntelligence()
   { // update intelligence based on difficulty level, the higher the difficulty the higher the chance for intelligence
-    if (isVulnerable && movesVulnerable > 0) {
+    if (!alreadyEaten && movesVulnerable > 0) {
         intelligence = false;
-        movesVulnerable--;
         return;
     }
     int rint = (int) (8*Math.random());
@@ -288,12 +296,12 @@ public class Ghost extends Character{
         dY = -1;
       }
     }
-    xPos = xPos + dX;
-    yPos = yPos + dY;
+    xPos += dX;
+    yPos += dY;
   }
 
   public void respawn() {
-    pX = 18;
-    pY = 21;
+    xPos = 19;
+    yPos = 19;
   }
 }

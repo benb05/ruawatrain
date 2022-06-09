@@ -6,6 +6,8 @@ public class Pacman extends Character{
   static int score;  // pacman's score
   int ndX, ndY; // storing the next dX,dY
   int dots; // keeps track of remaining dots
+  static boolean isInvincible; // tracks if pacman has eaten a powerup
+  static int ghostsEaten; //tracks how many ghosts pacman has eaten on current powerup
 
   // CONSTRUCTOR
   public Pacman( String inputFile )
@@ -89,9 +91,10 @@ public class Pacman extends Character{
         score += 10;
         dots--;
       }
-      else if (_maze[xPos][yPos] == '$') {
+      else if (_maze[xPos][yPos] == '+') {
           _maze[xPos][yPos] = '#';
-          Ghost.setMoves(10);
+          isInvincible = true;
+          Ghost.movesVulnerable = 10;
       }
     }
   }

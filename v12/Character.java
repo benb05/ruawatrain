@@ -13,7 +13,6 @@ public class Character {
   public Character( String inputFile )
   {
     _maze = new char[80][41]; // 80 X 41 for the sizing of out maps
-    int h = 0;
     int w = 0;
 
     //transcribe maze from file into memory
@@ -33,7 +32,6 @@ public class Character {
         {
           _maze[i][row] = line.charAt( i );
         }
-        h++;
         row++;
       }
 
@@ -41,7 +39,6 @@ public class Character {
       {
         _maze[i][row] = ' ';
       }
-      h++;
       row++;
 
     } catch( Exception e ) { System.out.println( "Error reading file" ); }
@@ -68,7 +65,7 @@ public class Character {
   }
 
   public boolean onPath( int x, int y) {
-    if (_maze[x][y] != '#' && _maze[x][y] != '.' && _maze[x][y] != '$'){
+    if (_maze[x][y] != '#' && _maze[x][y] != '.' && _maze[x][y] != '$' && _maze[x][y] != '+'){
       return false;
     } else {
       return true;
