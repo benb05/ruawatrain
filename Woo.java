@@ -10,7 +10,6 @@ public class Woo {
   private Ghost inky,blinky,pinky,clyde;  // just using clyde,inky for now (favorite names) (both smart)
   private Pacman pacman;
   private char[][] _maze;
-  private int h,w;
   private BufferedReader in;
 
   // COLORS BC WHY NOT
@@ -21,6 +20,7 @@ public class Woo {
   public static final String ORANGE = "\u001b[38;5;208m"; // only works on 256 color terminal
   public static final String MAGENTA = "\u001B[35m";
   public static final String RED = "\u001B[31m";
+  public static final String BLUE = "\u001b[34m";
 
   public Woo( String inputFile )
   {
@@ -43,19 +43,19 @@ public class Woo {
     int i, j;
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
-        if (j == clyde.getGX() && i == clyde.getGY()) {
-          retStr += ORANGE + "G" + WHITE;
+        if (j == clyde.getX() && i == clyde.getY()) {
+          retStr += clyde.isEatable() ? BLUE + "G" + WHITE : ORANGE + "G" + WHITE;
         }
-        else if (j == inky.getGX() && i == inky.getGY()) {
-          retStr += CYAN + "G" + WHITE;
+        else if (j == inky.getX() && i == inky.getY()) {
+          retStr += inky.isEatable() ? BLUE + "G" + WHITE : CYAN + "G" + WHITE;
         }
-        else if (j == blinky.getGX() && i == blinky.getGY()) {
-          retStr += RED + "G" + WHITE;
+        else if (j == blinky.getX() && i == blinky.getY()) {
+          retStr += blinky.isEatable() ? BLUE + "G" + WHITE : RED + "G" + WHITE;
         }
-        else if (j == pinky.getGX() && i == pinky.getGY()) {
-          retStr += MAGENTA + "G" + WHITE;
+        else if (j == pinky.getX() && i == pinky.getY()) {
+          retStr += pinky.isEatable() ? BLUE + "G" + WHITE : MAGENTA + "G" + WHITE;
         }
-        else if (j == pacman.getPX() && i == pacman.getPY()) {
+        else if (j == pacman.getX() && i == pacman.getY()) {
           retStr += YELLOW + "P" + WHITE;
         }
         else {
@@ -63,6 +63,9 @@ public class Woo {
         }
       }
       retStr += "\n";
+    }
+    if (Ghost.movesVulnerable > 0) {
+        retStr += "Powerup lasts for another " + Ghost.movesVulnerable + " moves.\n";
     }
     return retStr;
   }
@@ -78,44 +81,72 @@ public class Woo {
 
   public void setup()
   {
-    pacman.movePacman(20,16);
+    int x = 0;
+    int y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+    pacman.setPos(x,y);
 
-    clyde.movePacman(20,16);
-    inky.movePacman(20,16);
-    blinky.movePacman(20,16);
-    pinky.movePacman(20,16);
+    clyde.movePacman(x,y);
+    inky.movePacman(x,y);
+    blinky.movePacman(x,y);
+    pinky.movePacman(x,y);
 
-    clyde.setGX(9);
-    clyde.setGY(6);
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
 
-    inky.setGX(24);
-    inky.setGY(14);
+    clyde.setPos(x,y);
 
-    blinky.setGX(26);
-    blinky.setGY(19);
+    inky.setPos(x,y);
 
-    pinky.setGX(21);
-    pinky.setGY(3);
+    blinky.setPos(x,y);
+
+    pinky.setPos(x,y);
   }
 
   public void play() // RUDIMENTARY turn
   {
     while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
-      //delay(100);
-      try {
-        pacman.turn(in.readLine());
-      }
-      catch ( Exception e ) { }
+      TimerTask task = new TimerTask()
+      {
+        public void run()
+        {
+          try {
+            pacman.turn(in.readLine());
+          }
+          catch ( Exception e) {}
+        }
+      };
+      Timer timer = new Timer();
+      timer.schedule(task, 300);
+      delay(300);
+      timer.cancel();
+
       pacman.move();
-      clyde.movePacman(pacman.getPX(),pacman.getPY());
+      clyde.movePacman(pacman.getX(),pacman.getY());
       clyde.move();
-      inky.movePacman(pacman.getPX(),pacman.getPY());
+      inky.movePacman(pacman.getX(),pacman.getY());
       inky.move();
-      blinky.movePacman(pacman.getPX(),pacman.getPY());
+      blinky.movePacman(pacman.getX(),pacman.getY());
       blinky.move();
-      pinky.movePacman(pacman.getPX(),pacman.getPY());
+      pinky.movePacman(pacman.getX(),pacman.getY());
       pinky.move();
+      if (Pacman.ghostsEaten != 4 && Ghost.movesVulnerable > 0) {
+          Ghost.movesVulnerable--;
+      }
+      else {
+        Pacman.isInvincible = false;
+        Pacman.ghostsEaten = 0;
+        Ghost.movesVulnerable = 0;
+        Ghost.points = 200;
+      }
     }
     System.out.println(this);
     if (pacman.hasWon()) {
@@ -124,6 +155,7 @@ public class Woo {
     else {
       System.out.println("A ghost killed you.\nYour final score was " + pacman.getScore() + "\nBetter luck next time!");
     }
+    System.exit(0);
   }
 
   public static void main( String[] args )

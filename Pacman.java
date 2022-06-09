@@ -2,95 +2,37 @@
 // APCS pd6
 // FP01
 
-//enable file I/O
-import java.io.*;
-import java.util.*;
-
-public class Pacman {
-  private char[][] _maze;
-  int score;
-  int h,w;
-  int pX, pY;
-  int dX, dY; // change in pacman's motion (derivative teehee)
-  int dots;
+public class Pacman extends Character{
+  static int score;  // pacman's score
+  int ndX, ndY; // storing the next dX,dY
+  int dots; // keeps track of remaining dots
+  static boolean isInvincible; // tracks if pacman has eaten a powerup
+  static int ghostsEaten; //tracks how many ghosts pacman has eaten on current powerup
 
   // CONSTRUCTOR
   public Pacman( String inputFile )
   {
+    super(inputFile);
     score = 0;
-    // init 2D array to represent maze
-    // (80x25 is default terminal window size)
-    _maze = new char[80][41];
-    h = 0;
-    w = 0;
-
-    //transcribe maze from file into memory
-    try {
-      Scanner sc = new Scanner( new File(inputFile) );
-
-      //System.out.println( "reading in file..." );
-
-      int row = 0;
-
-      while( sc.hasNext() ) {
-
-        String line = sc.nextLine();
-
-        if ( w < line.length() )
-          w = line.length();
-
-        for( int i=0; i<line.length(); i++ )
-        {
-          _maze[i][row] = line.charAt( i );
-        }
-        h++;
-        row++;
-      }
-
-      for( int i=0; i<w; i++ )
-      {
-        _maze[i][row] = ' ';
-      }
-      h++;
-      row++;
-
-    } catch( Exception e ) { System.out.println( "Error reading file" ); }
-
     dottify();
   }//end constructor
 
   // ACCESSORS
-  public int getPX()
-  {
-    return pX;
-  }
-
-  public int getPY()
-  {
-    return pY;
-  }
-
-  public char[][] getMap() {
-    return _maze;
-  }
-
   public int getScore()
   {
     return score;
   }
 
-  // MUTATORS
-  public void movePacman(int x, int y)
+  public char[][] getMap()
   {
-    pX = x;
-    pY = y;
-    if (_maze[pX][pY] == '.') {
-      score += 10;
-      _maze[pX][pY] = '#';
-    }
+    return _maze;
   }
 
-  public void dottify() {
+  // MUTATORS
+  public static void addScore(int points) {
+    score += points;
+  }
+  private void dottify() {
     for (int i = 0; i < _maze.length; i++) {
       for (int j = 0; j < _maze[0].length; j++) {
         if (_maze[i][j] == '#') {
@@ -104,75 +46,62 @@ public class Pacman {
   public void turn(String direction) {
     direction = direction.toUpperCase();
     if (direction.equals("W")) {
-      dX = 0;
-      dY = -1;
+      ndX = 0;
+      ndY = -1;
     }
     else if (direction.equals("A")) {
-      dX = -1;
-      dY = 0;
+      ndX = -1;
+      ndY = 0;
     }
     else if (direction.equals("S")) {
-      dX = 0;
-      dY = 1;
+      ndX = 0;
+      ndY = 1;
     }
     else if (direction.equals("D")) {
-      dX = 1;
-      dY = 0;
+      ndX = 1;
+      ndY = 0;
+    }
+    if (onPath(xPos+ndX, yPos+ndY)) {
+      dX=ndX;
+      dY=ndY;
     }
   }
 
   // MOVING
-  public void move() {
-    if (_maze[pX+dX][pY+dY] == '.') {
-      pX += dX;
-      pY += dY;
-      _maze[pX][pY] = '#';
+  public void setPos(int x, int y) {  // necessary to redefine becuase we need to update food
+    super.setPos(x,y);
+    if (_maze[xPos][yPos] == '.') {
+      _maze[xPos][yPos] = '#';
       score += 10;
       dots--;
     }
-    else if (_maze[pX+dX][pY+dY] == '#') {
-      pX += dX;
-      pY += dY;
+  }
+
+  public void move() {
+    if (onPath(xPos + ndX, yPos + ndY)) {  // if the next desired direction makes sense, update to match it
+      dX=ndX;
+      dY=ndY;
+    }
+
+    if (onPath(xPos + dX, yPos + dY)) { // if you can move
+      xPos += dX;
+      yPos += dY;
+      if (_maze[xPos][yPos] == '.') { // if the new square is food
+        _maze[xPos][yPos] = '#';
+        score += 10;
+        dots--;
+      }
+      else if (_maze[xPos][yPos] == '+') {
+          _maze[xPos][yPos] = '#';
+          isInvincible = true;
+          Ghost.movesVulnerable = 20;
+      }
     }
   }
 
+  // WINNING
   public boolean hasWon() {
     return dots == 0;
   }
-
-  // FOR TESTING
-
-  public String toString()
-  {
-    //send ANSI code "ESC[0;0H" to place cursor in upper left
-    String retStr = "[0;0H";
-    //emacs shortcut: C-q, ESC
-    //emacs shortcut: M-x quoted-insert, ESC
-
-    int i, j;
-    for( i=0; i<h; i++ ) {
-      for( j=0; j<w; j++ )
-        retStr = retStr + _maze[j][i];
-      retStr = retStr + "\n";
-    }
-    return retStr;
-  }
-
-  // MAIN
-  public static void main( String[] args )
-  {
-    String mazeInputFile = null;
-
-    try {
-      mazeInputFile = args[0];
-    } catch( Exception e ) {
-      System.out.println( "Error reading input file." );
-      System.out.println( "USAGE:\n $ java Maze path/to/filename" );
-    }
-
-    if (mazeInputFile==null) { System.exit(0); }
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  }//end main()
 
 }

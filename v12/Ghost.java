@@ -35,6 +35,10 @@ public class Ghost extends Character{
     return _won;
   }
 
+  public boolean isEatable() {
+    return !alreadyEaten && movesVulnerable > 0;
+  }
+
   public void movePacman(int x, int y) // updates pacman's positioning
   {
     if (_maze[pX][pY] == '$') {
@@ -91,10 +95,8 @@ public class Ghost extends Character{
     //otherwise, recursively solve maze from next pos over, after marking current location
     else {
       _maze[x][y] = '@';
-      //System.out.println( this ); //refresh screen
       distOpt(x,y);
       _maze[x][y] = '.';
-      //System.out.println( this ); //refresh screen
       return;
     }
   }
@@ -199,17 +201,15 @@ public class Ghost extends Character{
     }
 
     if (_maze[xPos][yPos] == '$') { // ensure pacman hasn't moved on top of us
-      if (!alreadyEaten && movesVulnerable > 0) {
+      if (isEatable()) {
         respawn();
         alreadyEaten = false;
         Pacman.addScore(points);
         Pacman.ghostsEaten += 1;
-        points = Pacman.ghostsEaten == 4 ? 0 : points * 2;
-        return;
+        points *= 2;
       }
       else {
         _won = true;
-        return;
       }
     }
 
@@ -219,12 +219,13 @@ public class Ghost extends Character{
     else {
       randomMove();
     }
-    
+
     if (_maze[xPos][yPos] == '$') { // post move check
-        if (!alreadyEaten && movesVulnerable > 0) {
+        if (isEatable()) {
             respawn();
-            alreadyEaten = false;
+            alreadyEaten = true;
             Pacman.addScore(points);
+            Pacman.ghostsEaten += 1;
             points *= 2;
         }
         else {
@@ -235,7 +236,7 @@ public class Ghost extends Character{
 
   public void updateIntelligence()
   { // update intelligence based on difficulty level, the higher the difficulty the higher the chance for intelligence
-    if (!alreadyEaten && movesVulnerable > 0) {
+    if (isEatable()) {
         intelligence = false;
         return;
     }

@@ -20,6 +20,7 @@ public class Woo {
   public static final String ORANGE = "\u001b[38;5;208m"; // only works on 256 color terminal
   public static final String MAGENTA = "\u001B[35m";
   public static final String RED = "\u001B[31m";
+  public static final String BLUE = "\u001b[34m";
 
   public Woo( String inputFile )
   {
@@ -43,16 +44,16 @@ public class Woo {
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
         if (j == clyde.getX() && i == clyde.getY()) {
-          retStr += ORANGE + "G" + WHITE;
+          retStr += clyde.isEatable() ? BLUE + "G" + WHITE : ORANGE + "G" + WHITE;
         }
         else if (j == inky.getX() && i == inky.getY()) {
-          retStr += CYAN + "G" + WHITE;
+          retStr += inky.isEatable() ? BLUE + "G" + WHITE : CYAN + "G" + WHITE;
         }
         else if (j == blinky.getX() && i == blinky.getY()) {
-          retStr += RED + "G" + WHITE;
+          retStr += blinky.isEatable() ? BLUE + "G" + WHITE : RED + "G" + WHITE;
         }
         else if (j == pinky.getX() && i == pinky.getY()) {
-          retStr += MAGENTA + "G" + WHITE;
+          retStr += pinky.isEatable() ? BLUE + "G" + WHITE : MAGENTA + "G" + WHITE;
         }
         else if (j == pacman.getX() && i == pacman.getY()) {
           retStr += YELLOW + "P" + WHITE;
@@ -62,6 +63,9 @@ public class Woo {
         }
       }
       retStr += "\n";
+    }
+    if (Ghost.movesVulnerable > 0) {
+        retStr += "Powerup lasts for another " + Ghost.movesVulnerable + " moves.\n";
     }
     return retStr;
   }

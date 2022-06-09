@@ -2,95 +2,41 @@
 // APCS pd6
 // FP01
 
-//enable file I/O
-import java.io.*;
-import java.util.*;
-
-public class Ghost {
-  private char[][] _maze;
-  int h,w;
-  private int intelligence;
-  private int gX, gY; // ghost's position
-  private int dX, dY; // ghost's movement (for random)
+public class Ghost extends Character{
+  private boolean intelligence;
   private int pX, pY;
   private boolean _solved;
   private boolean _won;
   private int difficulty; // from 1 to 4, the higher the number the higher difficulty
+  private boolean alreadyEaten; //tracks if current ghost has already been eaten or not
+  static int movesVulnerable; //tracks number of turns until ghosts are no longer vulnerable
+  static int points; //tracks value of ghosts
+  private int respawnTime; //wait this many turns before ghost reenters map
 
   // CONSTRUCTOR
   public Ghost( String inputFile, int d )
   {
+    super(inputFile);
     difficulty = d;
-    intelligence = 1;
+    intelligence = true;
     _won = false;
     dX = 1;
     dY = 0;
-    _maze = new char[80][41];
-    h = 0;
-    w = 0;
-
-    //transcribe maze from file into memory
-    try {
-      Scanner sc = new Scanner( new File(inputFile) );
-
-      //System.out.println( "reading in file..." );
-
-      int row = 0;
-
-      while( sc.hasNext() ) {
-
-        String line = sc.nextLine();
-
-        if ( w < line.length() )
-          w = line.length();
-
-        for( int i=0; i<line.length(); i++ )
-        {
-          _maze[i][row] = line.charAt( i );
-        }
-        h++;
-        row++;
-      }
-
-      for( int i=0; i<w; i++ )
-      {
-        _maze[i][row] = ' ';
-      }
-      h++;
-      row++;
-
-    } catch( Exception e ) { System.out.println( "Error reading file" ); }
-
-    //at init time, maze has not been solved:
     _solved = false;
+    alreadyEaten = false;
+    movesVulnerable = 0;
+    points = 200;
+    respawnTime = 4;
   }//end constructor
 
   // ACCESSORS
-  public int getGX()
-  {
-    return gX;
-  }
-
-  public int getGY()
-  {
-    return gY;
-  }
-
   public boolean hasWon()
   {
     return _won;
   }
 
-  // MUTATORS
-
-  public void setGX(int nX)
-  {
-    gX = nX;
-  }
-
-  public void setGY(int nY)
-  {
-    gY = nY;
+  public boolean isEatable() {
+    return !alreadyEaten && movesVulnerable > 0;
   }
 
   public void movePacman(int x, int y) // updates pacman's positioning
@@ -116,48 +62,47 @@ public class Ghost {
     else if ( _maze[x][y] == '$' ) {
       _solved = true;
       //System.out.println( this ); // to be removed post testing era
-      if (_maze[gX][gY+1] == '@') {
+      // if it is solved, set the first step to be the closest @ symbol from init position
+      if (_maze[xPos][yPos+1] == '@') {
         dX = 0;
         dY = 1;
       }
-      else if (_maze[gX][gY-1] == '@') {
+      else if (_maze[xPos][yPos-1] == '@') {
         dX = 0;
         dY = -1;
       }
-      else if (_maze[gX+1][gY] == '@') {
+      else if (_maze[xPos+1][yPos] == '@') {
         dX = 1;
         dY = 0;
       }
-      else if (_maze[gX-1][gY] == '@') {
+      else if (_maze[xPos-1][yPos] == '@') {
         dX = -1;
         dY = 0;
       }
-      else {
+      else {  // this means that we didn't have to move (or we only moved once), so we are ON TOP of pacman
         _won = true;
-        gX = x;
-        gY = y;
+        xPos = x; // just to ensure that the ghost actually moves on to pacman, for visual effects
+        yPos = y;
         return;
       }
-      gX = gX+dX;
-      gY = gY+dY;
+      xPos = xPos+dX; // update position
+      yPos = yPos+dY;
       return;
     }
-    else if ( _maze[x][y] != '#' ) {
+    else if ( _maze[x][y] != '#' ) {  // DEADEND!
       return;
     }
-    //otherwise, recursively solve maze from next pos over,
-    //after marking current location
+    //otherwise, recursively solve maze from next pos over, after marking current location
     else {
       _maze[x][y] = '@';
-      //System.out.println( this ); //refresh screen
       distOpt(x,y);
       _maze[x][y] = '.';
-      //System.out.println( this ); //refresh screen
       return;
     }
   }
 
-  public int abs(int x) {
+  // OPTIMIZATION
+  public int abs(int x) { // helper method
     if (x < 0) {
       return -x;
     }
@@ -166,7 +111,10 @@ public class Ghost {
     }
   }
 
-  public void distOpt(int x, int y) {
+  public void distOpt(int x, int y) { // optimizes the direction the ghost looks based on its positioning from pacman
+    // We try to close the "largest distance" first
+    // If the x distance from pacman is larger than the y distance, try to cover x distance first, then y distance
+    // looking "towards pacman" for each of these
     if ( x >= pX && y >= pY) {
       if (abs(x-pX) > abs(y-pY)) {
         solve(x-1,y);
@@ -227,9 +175,9 @@ public class Ghost {
 
   // RESET
   public void reset()
-  {
-    for (int i = 0; i < h; i++) {
-      for (int j = 0; j < w; j++) {
+  { // reset the map after a probe
+    for (int i = 0; i < _maze[0].length; i++) {
+      for (int j = 0; j < _maze.length; j++) {
         if (_maze[j][i] == '.') {
           _maze[j][i] = '#';
         }
@@ -238,77 +186,90 @@ public class Ghost {
     _solved = false;
   }
 
-  // TURN
-  public void step() {
-    if (_maze[gX][gY] == '$') {
-      _won = true;
+  // MOVING
+  public void step() {  // the motion we will make
+    if (xPos == 18 && yPos == 17) {
+        if (respawnTime > 0) {
+            respawnTime--;
+            return;
+        }
+        else {
+            xPos = 19;
+            respawnTime = 4;
+            return;
+        }
     }
-    if (intelligence == 1) {
-      solve(gX,gY);
+
+    if (_maze[xPos][yPos] == '$') { // ensure pacman hasn't moved on top of us
+      if (isEatable()) {
+        respawn();
+        alreadyEaten = false;
+        Pacman.addScore(points);
+        Pacman.ghostsEaten += 1;
+        points *= 2;
+      }
+      else {
+        _won = true;
+      }
+    }
+
+    if (intelligence) {
+      solve(xPos,yPos);
     }
     else {
       randomMove();
     }
-    if (_maze[gX][gY] == '$') {
-      _won = true;
+
+    if (_maze[xPos][yPos] == '$') { // post move check
+        if (isEatable()) {
+            respawn();
+            alreadyEaten = true;
+            Pacman.addScore(points);
+            Pacman.ghostsEaten += 1;
+            points *= 2;
+        }
+        else {
+            _won = true;
+        }
     }
   }
+
   public void updateIntelligence()
-  {
+  { // update intelligence based on difficulty level, the higher the difficulty the higher the chance for intelligence
+    if (isEatable()) {
+        intelligence = false;
+        return;
+    }
     int rint = (int) (8*Math.random());
     if (difficulty == 4) {
-      intelligence=1;
+      intelligence = rint > 6 ? false : true;
     }
     else if (difficulty == 3) {
-      if (rint > 6) {
-        intelligence=0;
-      }
-      else {
-        intelligence=1;
-      }
+      intelligence = rint > 5 ? false : true;
     }
     else if (difficulty == 2) {
-      if (rint > 3) {
-        intelligence=0;
-      }
-      else {
-        intelligence=1;
-      }
+      intelligence = rint > 3 ? false : true;
     }
     else {
-      if (rint > 1) {
-        intelligence=0;
-      }
-      else {
-        intelligence=1;
-      }
+      intelligence = rint > 1 ? false : true;
     }
   }
+
   public void move()
   {
-    if (atIntersection()) {
+    if (atIntersection()) { // ensures movements are "smooth", and we don't randomly go right left right left etc
       updateIntelligence();
     }
     step();
     reset();
   }
 
-  // INTERSECTION DETECTOR
-  public boolean atIntersection() {
-    return onPath(gX + ( (dX+1)%2 ),gY + ( (dY+1)%2 )) || onPath(gX - ( (dX+1)%2 ),gY - ( (dY+1)%2 ));
-  }
-
-  // RANDOM MOVER
   public void randomMove()
   {
     int rint;
     if (atIntersection()) {
       rint = (int) (3*Math.random());
-      if (rint == 0) {
-        dX = dX;
-        dY = dY;
-      }
-      else if (rint == 1) {
+      if (rint == 1) {
         dX = (dX+1)%2;
         dY = (dY+1)%2;
       }
@@ -317,7 +278,7 @@ public class Ghost {
         dY = -( (dY+1)%2 );
       }
     }
-    while (!onPath(gX+dX, gY+dY)) {
+    while (!onPath(xPos+dX, yPos+dY)) {
       rint = (int) (4*Math.random());
       if (rint == 0) {
         dX = 1;
@@ -336,59 +297,12 @@ public class Ghost {
         dY = -1;
       }
     }
-    gX = gX + dX;
-    gY = gY + dY;
+    xPos += dX;
+    yPos += dY;
   }
 
-  // ONPATH
-  public boolean onPath( int x, int y) {
-    if (_maze[x][y] != '#' && _maze[x][y] != '$'){
-      return false;
-    } else {
-      return true;
-    }
+  public void respawn() {
+    xPos = 19;
+    yPos = 19;
   }
-
-  // FOR TESTING
-
-  private void delay( int n ) // removed post testing era
-  {
-    try {
-      Thread.sleep(n);
-    } catch( InterruptedException e ) {
-      System.exit(0);
-    }
-  }
-
-  public void play()  // removed post testing era
-  {
-    while (_maze[gX][gY] != '$')
-    {
-      move();
-    }
-  }
-
-  public String toString()
-  {
-    //send ANSI code "ESC[0;0H" to place cursor in upper left
-    String retStr = "[0;0H";
-    //emacs shortcut: C-q, ESC
-    //emacs shortcut: M-x quoted-insert, ESC
-
-    int i, j;
-    for( i=0; i<h; i++ ) {
-      for( j=0; j<w; j++ )
-        retStr = retStr + _maze[j][i];
-      retStr = retStr + "\n";
-    }
-    return retStr;
-  }
-
-  // MAIN
-  public static void main( String[] args )
-  {
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  }//end main()
-
 }

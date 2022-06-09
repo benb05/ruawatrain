@@ -94,7 +94,7 @@ public class Pacman extends Character{
       else if (_maze[xPos][yPos] == '+') {
           _maze[xPos][yPos] = '#';
           isInvincible = true;
-          Ghost.movesVulnerable = 10;
+          Ghost.movesVulnerable = 20;
       }
     }
   }
