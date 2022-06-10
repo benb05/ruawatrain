@@ -95,6 +95,9 @@ public class Character {
         if (_maze[j][i] == '@') {
           retStr = retStr + "\u001b[32m" + _maze[j][i] + "\u001b[0m"; // for demo purposes, probes show up green
         }
+        else if (_maze[j][i] == '$') {
+          retStr = retStr + "\u001b[34m" + _maze[j][i] + "\u001b[0m";
+        }
         else {
           retStr = retStr + _maze[j][i];
         }
