@@ -100,9 +100,30 @@ public class Woo {
 
     clyde.setPos(x,y);
 
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+
     inky.setPos(x,y);
 
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+
     blinky.setPos(x,y);
+
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
 
     pinky.setPos(x,y);
   }

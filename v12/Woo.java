@@ -67,6 +67,9 @@ public class Woo {
     if (Ghost.movesVulnerable > 0) {
         retStr += "Powerup lasts for another " + Ghost.movesVulnerable + " moves.\n";
     }
+    else {
+      retStr += "                                                                  "; // to clear off powerup message
+    }
     return retStr;
   }
 
