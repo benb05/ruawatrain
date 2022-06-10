@@ -16,7 +16,7 @@ public class Woo {
   public static final String CLEAR = "\033[H\033[2J[0;0H";
   public static final String YELLOW = "\u001B[33m";
   public static final String CYAN = "\u001B[36m";
-  public static final String WHITE = "\u001B[37m";
+  public static final String RESET = "\033[0m";
   public static final String ORANGE = "\u001b[38;5;208m"; // only works on 256 color terminal
   public static final String MAGENTA = "\u001B[35m";
   public static final String RED = "\u001B[31m";
@@ -31,8 +31,6 @@ public class Woo {
     blinky = new Ghost(inputFile, 4); // red
     pacman = new Pacman(inputFile);
     _maze = pacman.getMap();
-    // init 2D array to represent maze
-    // (80x25 is default terminal window size)
     System.out.println(CLEAR);
 
   }//end constructor
@@ -44,19 +42,19 @@ public class Woo {
     for( i=0; i<_maze[0].length; i++ ) {
       for( j=0; j<_maze.length; j++ ) {
         if (j == clyde.getX() && i == clyde.getY()) {
-          retStr += clyde.isEatable() ? BLUE + "G" + WHITE : ORANGE + "G" + WHITE;
+          retStr += clyde.isEatable() ? BLUE + "G" + RESET : ORANGE + "G" + RESET;
         }
         else if (j == inky.getX() && i == inky.getY()) {
-          retStr += inky.isEatable() ? BLUE + "G" + WHITE : CYAN + "G" + WHITE;
+          retStr += inky.isEatable() ? BLUE + "G" + RESET : CYAN + "G" + RESET;
         }
         else if (j == blinky.getX() && i == blinky.getY()) {
-          retStr += blinky.isEatable() ? BLUE + "G" + WHITE : RED + "G" + WHITE;
+          retStr += blinky.isEatable() ? BLUE + "G" + RESET : RED + "G" + RESET;
         }
         else if (j == pinky.getX() && i == pinky.getY()) {
-          retStr += pinky.isEatable() ? BLUE + "G" + WHITE : MAGENTA + "G" + WHITE;
+          retStr += pinky.isEatable() ? BLUE + "G" + RESET : MAGENTA + "G" + RESET;
         }
         else if (j == pacman.getX() && i == pacman.getY()) {
-          retStr += YELLOW + "P" + WHITE;
+          retStr += YELLOW + "P" + RESET;
         }
         else {
           retStr += _maze[j][i];
@@ -106,15 +104,54 @@ public class Woo {
 
     clyde.setPos(x,y);
 
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+
     inky.setPos(x,y);
 
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
+
     blinky.setPos(x,y);
+
+    x = 0;
+    y = 0;
+    while (!pacman.onPath(x,y)) {
+      x = (int) (80 * Math.random());
+      y = (int) (41 * Math.random());
+    }
 
     pinky.setPos(x,y);
   }
 
   public void play() // RUDIMENTARY turn
   {
+    System.out.println("The four ghosts in order of intelligence are " + RED + "Blinky" + RESET + ", " + MAGENTA + "Pinky" + RESET + ", " + CYAN + "Inky" + RESET + ", and " + ORANGE + "Clyde" + RESET + ".");
+    System.out.println("They will hunt you. Try to evade them.");
+    System.out.println("You may turn by clicking one of w, a, s, or d AND THEN ENTER to turn along the map.");
+    System.out.println("The + signs are powerups that let you eat the ghosts.");
+    System.out.println("You are the capital " + YELLOW + "P" + RESET + ". Your goal is to try to eat all the dots, which will turn into hashtags once you pass over them.");
+    System.out.println("The game will begin when you enter your first move.");
+    System.out.println("Click enter to begin the game.");
+    try {
+      in.readLine();
+    }
+    catch (Exception e) {}
+    System.out.println(CLEAR);
+    System.out.println(this);
+    try {
+      pacman.turn(in.readLine());
+    }
+    catch ( Exception e) {}
+
     while (!clyde.hasWon() && !inky.hasWon() && !blinky.hasWon() && !pinky.hasWon() && !pacman.hasWon()) {
       System.out.println(this);
       TimerTask task = new TimerTask()

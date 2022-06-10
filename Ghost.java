@@ -61,7 +61,6 @@ public class Ghost extends Character{
     //other base cases
     else if ( _maze[x][y] == '$' ) {
       _solved = true;
-      //System.out.println( this ); // to be removed post testing era
       // if it is solved, set the first step to be the closest @ symbol from init position
       if (_maze[xPos][yPos+1] == '@') {
         dX = 0;
